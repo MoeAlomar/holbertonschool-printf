@@ -16,7 +16,7 @@ int print_int(va_list args)
 	return (write(1, "0", 1));
 
 	if (num < 0)
-	{
+{
 	buffer[len++] = '-';
 	num = -num;
 	}
@@ -28,7 +28,7 @@ int print_int(va_list args)
 	}
 	buffer[len + i] = '\0';
 	while (num)
-	{
+{
 	buffer[--i + len] = (num % 10) + '0';
 	num /= 10;
 	}
