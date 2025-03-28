@@ -25,6 +25,10 @@ int _printf(const char *format, ...)
 			char *str = va_arg(args, char*);
 			int len = 0;
 
+			if (!str)
+			str = "(null)";
+
+
 			while (str[len])
 			len++;
 
