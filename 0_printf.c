@@ -1,6 +1,7 @@
 #include "main.h"
 #include <stdarg.h>
 #include <unistd.h>
+
 /**
  * print_char - Prints a character
  * @args: Argument list
@@ -62,7 +63,10 @@ int _printf(const char *format, ...)
 			else if (*format == '%')
 				count += write(1, "%", 1);
 			else
-				return (-1);
+			{
+				count += write(1, "%", 1);
+				count += write(1, format, 1);
+			}
 		}
 		else
 			count += write(1, format, 1);
