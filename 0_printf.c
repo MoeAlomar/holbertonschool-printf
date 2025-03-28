@@ -1,7 +1,39 @@
 #include "main.h"
 #include <stdarg.h>
 #include <unistd.h>
+/**
+ * print_int - this method handles the specifier i and d  for the integers
+ * @args: is the arguments list provided by the _printf
+ * Return: this method returns the bytes printed by _printf.
+ */
+int print_int(va_list args)
+{
+  int num = va_arg(args, int);
+  char buffer [12];
+  int i = 0, len = 0, temp;
 
+	if (num == 0)
+	return (write(1, "0", 1));
+
+	if (num < 0)
+	{
+	buffer[len++] = '-';
+	num = -num;
+	}
+	temp = num;
+	while(temp)
+	{
+	temp /= 10;
+	i++;
+	}
+	buffer[len + i] = '\0';
+	while (num)
+        {
+	buffer[--i + len] = (num % 10) + '0';
+	num /= 10;
+	}
+	return (write(1, buffer, len + i);
+}
 /**
  * print_char - Prints a character
  * @args: Argument list
@@ -60,6 +92,8 @@ int _printf(const char *format, ...)
 				count += print_char(args);
 			else if (*format == 's')
 				count += print_string(args);
+			else if (*format == 'd' || *format == 'i')
+			  count += print_int(args);
 			else if (*format == '%')
 				count += write(1, "%", 1);
 			else

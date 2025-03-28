@@ -1,0 +1,13 @@
+#include "main.h"
+#include <stdarg.h>
+
+
+int _printf(const char *format, ...)
+{
+	va_list args;
+	int count = 0;
+
+
+	
+
+}
