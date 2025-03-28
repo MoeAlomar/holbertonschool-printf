@@ -4,9 +4,9 @@
 
 int _printf(const char *format, ...)
 {
+	int count;
 	va_list args;
 	va_start(args, format);
-	int count;
 	count = 0;
 
 	while (*format != '\0')
