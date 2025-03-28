@@ -3,6 +3,26 @@
 #include <unistd.h>
 
 /**
+ * reverse_string - Reverse a string in-place
+ * @str: String to reverse
+ * @length: Length of the string
+ */
+void reverse_string(char *str, int length)
+{
+	int start = 0;
+	int end = length - 1;
+
+	while (start < end)
+	{
+		char temp = str[start];
+		str[start] = str[end];
+		str[end] = temp;
+		start++;
+		end--;
+	}
+}
+
+/**
  * print_integer - Print an integer to stdout
  * @n: Integer to print
  *
@@ -47,27 +67,6 @@ int print_integer(int n)
 	}
 
 	return (write(1, buffer, length));
-}
-
-/**
- * reverse_string - Reverse a string in-place
- * @str: String to reverse
- * @length: Length of the string
- */
-void reverse_string(char *str, int length)
-{
-	int start = 0;
-	int end = length - 1;
-
-	while (start < end)
-	{
-		char temp = str[start];
-
-		str[start] = str[end];
-		str[end] = temp;
-		start++;
-		end--;
-	}
 }
 
 /**
