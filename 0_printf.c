@@ -1,43 +1,12 @@
 #include "main.h"
 #include <stdarg.h>
 #include <unistd.h>
-/**
- * print_int - this method handles the specifier i and d  for the integers
- * @args: is the arguments list provided by the _printf
- * Return: this method returns the bytes printed by _printf.
- */
-int print_int(va_list args)
-{
-	int num = va_arg(args, int);
-	char buffer[12];
-	int i = 0, len = 0, temp;
 
-	if (num == 0)
-	return (write(1, "0", 1));
-
-	if (num < 0)
-{
-	buffer[len++] = '-';
-	num = -num;
-	}
-	temp = num;
-	while (temp)
-	{
-	temp /= 10;
-	i++;
-	}
-	buffer[len + i] = '\0';
-	while (num)
-{
-	buffer[--i + len] = (num % 10) + '0';
-	num /= 10;
-	}
-	return (write(1, buffer, len + i));
-}
 /**
- * print_char - Prints a character
- * @args: Argument list
- * Return: Number of characters printed
+ * print_char - Prints a single character
+ * @args: va_list of arguments
+ *
+ * Return: Number of characters printed (1)
  */
 int print_char(va_list args)
 {
@@ -48,7 +17,8 @@ int print_char(va_list args)
 
 /**
  * print_string - Prints a string
- * @args: Argument list
+ * @args: va_list of arguments
+ *
  * Return: Number of characters printed
  */
 int print_string(va_list args)
@@ -64,13 +34,54 @@ int print_string(va_list args)
 }
 
 /**
- * _printf - Prints formatted output to stdout.
- * @format: The format string containing directives.
+ * print_integer - Prints an integer (handles %d and %i)
+ * @args: va_list of arguments
  *
- * Description: A simplified version of printf that supports:
- *              %c for characters, %s for strings, and %% for '%'.
+ * Return: Number of characters printed
+ */
+int print_integer(va_list args)
+{
+	int num = va_arg(args, int);
+	char buffer[12];
+	int i = 0, len = 0, temp;
+
+	if (num == 0)
+		return (write(1, "0", 1));
+
+	if (num < 0)
+	{
+		buffer[len++] = '-';
+		num = -num;
+	}
+
+	temp = num;
+	while (temp > 0)
+	{
+		temp /= 10;
+		i++;
+	}
+
+	buffer[len + i] = '\0';
+
+	while (num > 0)
+	{
+		buffer[--i + len] = (num % 10) + '0';
+		num /= 10;
+	}
+	return (write(1, buffer, len + i));
+}
+
+/**
+ * _printf - A simplified version of printf
+ * @format: The format string containing directives
  *
- * Return: The number of characters printed, or -1 on error.
+ * Description: Supports the following format specifiers:
+ * %c - Prints a single character
+ * %s - Prints a string
+ * %d or %i - Prints an integer
+ * %% - Prints the percent symbol
+ *
+ * Return: Number of characters printed, or -1 on error
  */
 int _printf(const char *format, ...)
 {
@@ -79,6 +90,7 @@ int _printf(const char *format, ...)
 
 	if (!format)
 		return (-1);
+
 	va_start(args, format);
 
 	while (*format)
@@ -92,10 +104,8 @@ int _printf(const char *format, ...)
 				count += print_char(args);
 			else if (*format == 's')
 				count += print_string(args);
-			else if (*format == 'd')
-			count += print_int(args);
-			else if (*format == 'i')
-			count += print_int(args);
+			else if (*format == 'd' || *format == 'i')
+				count += print_integer(args);
 			else if (*format == '%')
 				count += write(1, "%", 1);
 			else
@@ -105,9 +115,12 @@ int _printf(const char *format, ...)
 			}
 		}
 		else
+		{
 			count += write(1, format, 1);
+		}
 		format++;
 	}
+
 	va_end(args);
 	return (count);
 }
