@@ -3,115 +3,107 @@
 #include <unistd.h>
 
 /**
- * print_char - Prints a single character
- * @args: va_list of arguments
- *
- * Return: Number of characters printed (1)
- */
-int print_char(va_list args)
-{
-	char c = (char)va_arg(args, int);
-
-	return (write(1, &c, 1));
-}
-
-/**
- * print_string - Prints a string
- * @args: va_list of arguments
+ * print_integer - Print an integer to stdout
+ * @n: Integer to print
  *
  * Return: Number of characters printed
  */
-int print_string(va_list args)
+int print_integer(int n)
 {
-	char *str = va_arg(args, char *);
-	int len = 0;
+	char buffer[20];
+	int is_negative = 0;
+	int length = 0;
+	unsigned int num;
 
-	if (!str)
-		str = "(null)";
-	while (str[len])
-		len++;
-	return (write(1, str, len));
+	if (n == 0)
+	{
+		buffer[length++] = '0';
+	}
+	else
+	{
+		if (n < 0)
+		{
+			is_negative = 1;
+			num = -n;
+		}
+		else
+		{
+			num = n;
+		}
+
+		while (num > 0)
+		{
+			buffer[length++] = (num % 10) + '0';
+			num /= 10;
+		}
+
+		if (is_negative)
+		{
+			buffer[length++] = '-';
+		}
+
+		/* Reverse the string */
+		reverse_string(buffer, length);
+	}
+
+	return (write(1, buffer, length));
 }
 
 /**
- * print_integer - Prints an integer (handles %d and %i)
- * @args: va_list of arguments
+ * reverse_string - Reverse a string in-place
+ * @str: String to reverse
+ * @length: Length of the string
+ */
+void reverse_string(char *str, int length)
+{
+	int start = 0;
+	int end = length - 1;
+
+	while (start < end)
+	{
+		char temp = str[start];
+
+		str[start] = str[end];
+		str[end] = temp;
+		start++;
+		end--;
+	}
+}
+
+/**
+ * _printf - Custom printf function that mimics standard printf
+ * @format: Format string containing conversion specifiers
  *
  * Return: Number of characters printed
- */
-int print_integer(va_list args)
-{
-	int num = va_arg(args, int);
-	char buffer[12];
-	int i = 0, len = 0, temp;
-
-	if (num == 0)
-		return (write(1, "0", 1));
-
-	if (num < 0)
-	{
-		buffer[len++] = '-';
-		num = -num;
-	}
-
-	temp = num;
-	while (temp > 0)
-	{
-		temp /= 10;
-		i++;
-	}
-
-	buffer[len + i] = '\0';
-
-	while (num > 0)
-	{
-		buffer[--i + len] = (num % 10) + '0';
-		num /= 10;
-	}
-	return (write(1, buffer, len + i));
-}
-
-/**
- * _printf - A simplified version of printf
- * @format: The format string containing directives
- *
- * Description: Supports the following format specifiers:
- * %c - Prints a single character
- * %s - Prints a string
- * %d or %i - Prints an integer
- * %% - Prints the percent symbol
- *
- * Return: Number of characters printed, or -1 on error
  */
 int _printf(const char *format, ...)
 {
 	va_list args;
 	int count = 0;
 
-	if (!format)
-		return (-1);
-
 	va_start(args, format);
+
+	if (format == NULL)
+		return (-1);
 
 	while (*format)
 	{
 		if (*format == '%')
 		{
 			format++;
-			if (!*format)
-				return (-1);
-			if (*format == 'c')
-				count += print_char(args);
-			else if (*format == 's')
-				count += print_string(args);
-			else if (*format == 'd' || *format == 'i')
-				count += print_integer(args);
-			else if (*format == '%')
-				count += write(1, "%", 1);
-			else
+			switch (*format)
 			{
+			case 'd':
+			case 'i':
+				count += print_integer(va_arg(args, int));
+				break;
+			case '%':
+				count += write(1, "%", 1);
+				break;
+			default:
 				count += write(1, "%", 1);
 				count += write(1, format, 1);
+				break;
 			}
 		}
 		else
