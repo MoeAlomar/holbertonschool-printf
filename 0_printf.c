@@ -14,10 +14,15 @@ int _printf(const char *format, ...)
 	if (*format == '%')
 	{
 	format++;
+	  if (!*format)
+	{
+		va_end(args);
+		return (-1);
+		}
 		if (*format == 'c')
 		{
-		  char ch;
-		  ch = (char)va_arg(args, int);
+		char ch;
+	        ch = (char)va_arg(args, int);
 			count += write(1, &ch, 1);
 		}
 		else if (*format == 's')
