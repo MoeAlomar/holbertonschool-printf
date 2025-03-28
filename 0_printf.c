@@ -15,6 +15,7 @@ void reverse_string(char *str, int length)
 	while (start < end)
 	{
 		char temp = str[start];
+
 		str[start] = str[end];
 		str[end] = temp;
 		start++;
