@@ -1,0 +1,22 @@
+DESCRIPTION 
+
+
+The _ printf tunction is a simplified custom implementatation of the standard (C) printf function it writes formatted output to the standard output (stdout) based on a format string (format) that specifies how subsequent arguments are to be displayed
+The function supports the following conversion specifiers:
+* %C:- Prints single character 
+* %S:- Prints a string 
+* (%d) and (%i) :- print a signed integer in decimal notation %% :- Prints a literal a literal % character.
+
+If an unsupported specifier  is encountered 
+the function print the % followed by the unsupported characters field width 
+precision or length modifiers 
+
+
+RETURN VALUE 
+*On success (_printf) returns the total number of characters printf (excluding the null byte) 
+*If the format string is NULL it returns (-1).
+
+
+AUTHOR 
+Mohammed Alomar
+Abdullatif Alzaher 
