@@ -32,4 +32,3 @@ AUTHOR
 
 SEE ALSO
     printf(3), write(2), stdarg(3)
-Abdullatif Alzaher 
