@@ -1,11 +1,35 @@
-#_printf man page 
+NAME
+    _printf - Custom implementation of the standard printf function for formatted output
 
-*Name
-(printf) - custom function to print formatted output to the standard output 
+SYNOPSIS
+    #include "main.h"
+    
+    int _printf(const char *format, ...);
 
-*SYNOPSIS 
-(C).
-#include "main.h"
+DESCRIPTION
+    _printf is a simplified version of the standard C library's printf function. It parses the format string and
+    handles a subset of conversion specifiers:
+      - %d or %i: Prints a signed integer using the helper function print_integer.
+      - %%: Prints a literal '%' character.
 
-int _printf(const char *format, ...);
+    Internally, _printf uses variadic arguments to accept an arbitrary number of parameters. The print_integer function converts an integer into a string by extracting its digits in reverse order, then uses the reverse_string helper to correct the order before writing it to standard output.
 
+RETURN VALUE
+    Upon successful execution, _printf returns the total number of characters printed to stdout.
+    If the format string is NULL or an error occurs, the function returns -1.
+
+EXAMPLES
+    Example 1: Printing an integer
+       _printf("The number is %d\n", 123);
+       // Output: The number is 123
+
+    Example 2: Printing a literal percent sign
+       _printf("Progress: 100%% complete\n");
+       // Output: Progress: 100% complete
+
+AUTHOR
+    Mohammad alomar, Abdullatif alzaher (2025)
+
+SEE ALSO
+    printf(3), write(2), stdarg(3)
+Abdullatif Alzaher 
